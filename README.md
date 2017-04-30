@@ -14,6 +14,16 @@ The markup is written to `stdout`. To save it to a file, use `tex2wp file.tex > 
 
 `\include` and `\input` commands are resolved relative to the initial `.tex` file.
 
+### Beta Features
+
+In addition to `.tex`, `tex2wp` now accepts an `ast` formatted in JSON as input (depending on the file extension of the input file). Since generating the `ast` might take a lot of time, this can save a lot of time during development. 
+
+The new `--mode <mode>` argument changes the output of the script:
+
+* `tex2wp in.tex --mode ast > ast.json` saves the `ast` for later reuse. `tex2wp ast.json` will run faster than `tex2wp in.tex`, but provide the same output.
+* `tex2wp in.tex --mode pb > out.json` creates a JSON file which can be imported into [pressbooks](https://github.com/pressbooks/pressbooks) using the (not yet released) **pressbooks_import** plugin.
+* `tex2wp in.tex --mode quiet --figarch out.zip` will create a zip archive containing all figures (but with `.pdf` replaced with `.svg`) used in the input document. This again can be imported using **pressbooks_import**.
+
 ## High Level Architecture Overview
 
 The TeX parser produces an [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST) from `.tex` source files. 
