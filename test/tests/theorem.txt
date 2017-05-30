@@ -1,0 +1,38 @@
+<div class="textbox tbbeispiel">
+<a id="a"></a><h1 class="not-in-list">Beispiel [ref id="a" d="abh"]</h1>
+content
+</div>
+
+<div class="textbox tbbeispiel">
+<a id="b"></a><h1 class="not-in-list">Beispiel [ref id="b" d="abh"]: Title</h1>
+content
+</div>
+
+<div class="textbox tbbeispiel">
+<h1 class="not-in-list">Behauptung</h1>
+content
+</div>
+
+<div class="textbox tbbeispiel">
+<a id="d"></a><h1 class="not-in-list">Named [ref id="d" d="abh"]</h1>
+content
+</div>
+
+<div class="textbox tbbeispiel">
+<h1 class="not-in-list">Stern [votingstar id="foo"]</h1>
+content
+</div>
+
+<div class="textbox tbformel">
+content
+</div>
+
+<div class="textbox tbformel">
+<a id="x"></a><h1 class="not-in-list">Title [ref id="x" d="abh"]</h1>
+content
+</div>
+
+<div class="textbox tbformel">
+<h1 class="not-in-list">Title: Subtitle [votingstar id="bar"]</h1>
+content
+</div>

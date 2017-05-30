@@ -1,0 +1,7 @@
+[latex id="eq:einf-Z_aus_N_1"]
+\begin{aligned}[]\label{eq:einf-Z aus N 1} (m_1,m_2) \sim (n_1,n_2) \iff m_1+n_2 = n_1 + m_2\end{aligned}
+[/latex]
+
+<div class="wp-caption aligncenter">[latex]
+\begin{aligned}[][x]_\sim = \setc {y \in X}{y \sim x}\end{aligned}
+[/latex]</div>

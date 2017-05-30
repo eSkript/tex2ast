@@ -8,7 +8,7 @@ tex2wp is a tool to simplify the conversion of existing LaTeX documents to the [
 
 `tex2wp` takes a tex file as its first argument and will output markup which can be put into the Wordpress editor in *text* mode.
 
-When run using the `.phar` binary, the command has to be invoked with `php tex2wp.phar [args]`. From the source, it's `php convert.php [args]`.
+When run using the `.phar` binary, the command has to be invoked with `php tex2wp.phar [args]`. From the source, it's `php convert.php [args]`. Run `php -d phar.readonly=false scripts/buildphar.php` to generate a phar-based binary at `bin/tex2wp`.
 
 The markup is written to `stdout`. To save it to a file, use `tex2wp file.tex > file.txt`. On MacOS, `tex2wp file.tex | pbcopy` will put the result into the clipboard, so it can be pasted into the editor afterwards.
 
