@@ -290,7 +290,7 @@ function produceEnv($n) {
   $name = $n->name;
   $theorem = @$theorems[$n->star ? "$name*" : $name];
   if ($name == 'namedtheorem') {
-		$theorem = ['name' => wpContent($n->args[0]->content), 'star' => false];
+		$theorem = ['name' => wpContent($n->args[0]->content), 'star' => true];
   }
   if (isset($envs[$name])) {
     $out = $envs[$name]($n);

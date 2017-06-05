@@ -14,7 +14,7 @@ content
 </div>
 
 <div class="textbox tbbeispiel">
-<a id="d"></a><h1 class="not-in-list">Named [ref id="d" d="abh"]</h1>
+<h1 class="not-in-list">Named</h1>
 content
 </div>
 
