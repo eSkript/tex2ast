@@ -346,7 +346,7 @@ $controlChars = [
 $punctChars = [
 	'~' => '&nbsp;',
 	'<' => '&lt;',
-	'<' => '&gt;',
+	'>' => '&gt;',
 ];
 
 
@@ -370,6 +370,7 @@ function produceCmd($n) {
 }
 
 function wpContent($ast) {
+	global $punctChars;
 	$out = '';
 	foreach ($ast as $n) {
 		$t = $n->type;
@@ -385,6 +386,8 @@ function wpContent($ast) {
 			$out .= produceCmd($n);
 		} elseif ($t == 'math') {
 			$tex = trim(LatexParser::unparse($n->content));
+			// Prevent WordPress from thinking things are tags and removing them.
+			$tex = str_replace(['<', '>'], ['&lt;', '&gt;'], $tex);
 			if ($n->inline) {
 				$out .= "[latex]{$tex}[/latex]";
 			} else {
