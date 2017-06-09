@@ -96,7 +96,7 @@ class PreProcessor extends Tokenizer {
 			for ($i = 0; $i < $num; $i+= 1) { 
 				$d->defs[$i] = $this->optStringArgument();
 			}
-			$d->str = $this->group2string();
+			$d->str = $this->group2string(true);
 			$this->commands[$name] = $d;
 			return null;
 		}

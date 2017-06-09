@@ -1,0 +1,1 @@
+[latex]P \not \subseteq Q[/latex]
