@@ -18,7 +18,7 @@ function chapter_split($txt, $level = 0, &$preamble = false) {
 	$chapters = [];
 	foreach ($chapter_titles as $i => $title) {
 		$content = trim($chapter_contents[$i+1]) . "\n";
-		$atts = $chapter_attributes[$i+1];
+		$atts = $chapter_attributes[$i];
 		if (isset($atts['id'])) {
 			$content .= "\n<a id=\"$atts[id]\" class=\"post-ref\" />\n";
 		}
