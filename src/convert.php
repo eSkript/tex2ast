@@ -55,11 +55,11 @@ $lex->path2string = function($path) use ($basePath) {
 	return $str;
 };
 
-function tex2ast($str) {
+function tex2ast($str, $id = null) {
 	global $lex, $signatures;
 	$parser = new LatexParser($lex);
 	$parser->signatures = $signatures;
-	$lex->stringPush($str);
+	$lex->stringPush($str, $id);
 	// while ($tok = $lex->next()) {
 	//   echo json_encode($tok, JSON_PRETTY_PRINT)."\n";
 	// }

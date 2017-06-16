@@ -47,7 +47,8 @@ class PreProcessor extends Tokenizer {
 		$str = $this->path2string($path);
 		$this->stringPush($str, $path);
 	}
-	public function stringPush($str, $id = 'makro') {
+	public function stringPush($str, $id = null) {
+		if ($id === null) $id = 'makro';
 		// NOTE: caching tokens for reused makros has no performance benefit
 		if (strlen($str)==0) return;
 		$ts = new LatexTokenizer($str);
@@ -75,7 +76,7 @@ class PreProcessor extends Tokenizer {
 		if ($tok->type == 'param') {
 			$index = substr($tok->value, 1) - 1;
 			$str = $this->input->parameter[$index];
-			$this->stringPush($str, 'parameter');
+			$this->stringPush($str, $tok->value);
 			return null;
 		}
 		// pass thru non-cmd tokens
@@ -131,7 +132,7 @@ class PreProcessor extends Tokenizer {
 				$env = $this->environments[$name];
 				$ts = new LatexTokenizer($env->before);
 				$ts->parameter = $this->readArgs($env->num, $env->defs);
-				$ts->id = $name;
+				$ts->id = "\\begin{{$name}}";
 				$this->inputPush($ts);
 				array_push($this->envParamStack, $ts->parameter);
 				return null;
@@ -145,7 +146,7 @@ class PreProcessor extends Tokenizer {
 				$env = $this->environments[$name];
 				$ts = new LatexTokenizer($env->after);
 				$ts->parameter = array_pop($this->envParamStack);
-				$ts->id = $name;
+				$ts->id = "\\end{{$name}}";
 				$this->inputPush($ts);
 				return null;
 			}

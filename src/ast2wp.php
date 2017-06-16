@@ -143,7 +143,7 @@ $cmds['cite'] = function ($args) {
 	if (count($extra) > 0) {
 		$note .= ' \textit{('.implode(', ', $extra).')}';
 	}
-	$note = wpContent(tex2ast($note));
+	$note = wpContent(tex2ast($note, 'bib'));
 	return "[footnote]{$note}[/footnote]";
 };
 
