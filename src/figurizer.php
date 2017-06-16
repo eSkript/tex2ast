@@ -7,7 +7,7 @@ function figurize($html, $base_path, $out) {
 	
 	$zip = new ZipArchive();
 	
-	$zip->open('out.zip', ZipArchive::CREATE);
+	$zip->open($out, ZipArchive::CREATE);
 	
 	$chapter_expr = '#<img(.*?)>#';
 	preg_match_all($chapter_expr, $html, $match);
