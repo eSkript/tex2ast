@@ -6,12 +6,15 @@
 \textit{}
 \textsc{}
 \emph{}
+\underline{}
 \href{}{}
+\url{}
 \includegraphics[]{}
 
 \section[]{}
 \subsection[]{}
 \subsubsection[]{}
+\paragraph{}
 
 \clearpage
 \newpage
@@ -31,13 +34,14 @@
 \captionsetup{}
 \caption{}
 \captionof{}{}
-\cite{}
+\cite[]{}
 \footnote{}
 \label{}
 
 \bibliography{}
 \setcounter{}{}
 \index[]{}
+\nomenclature{}{}
 
 \ref{}
 \eqref{}

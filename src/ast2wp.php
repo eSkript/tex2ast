@@ -9,7 +9,7 @@
 
 // TODO: make ast pre-processor to preprocess paragraphs and lists
 
-$cmdIgnoreList = ['title', 'maketitle', 'allowdisplaybreaks', 'label', 'normalfont', 'textwidth', 'scshape', 'rule', 'linewidth', 'vfill', 'thispagestyle', 'bibliographystyle', 'bibliography', 'addcontentsline', 'pagenumbering', 'newpage', 'clearpage', 'pagebreak', 'starid'];
+$cmdIgnoreList = ['title', 'maketitle', 'allowdisplaybreaks', 'label', 'normalfont', 'textwidth', 'scshape', 'rule', 'linewidth', 'vfill', 'thispagestyle', 'bibliographystyle', 'bibliography', 'addcontentsline', 'pagenumbering', 'newpage', 'clearpage', 'pagebreak', 'starid', 'color', 'FloatBarrier', 'pagestyle', 'setcounter', 'tableofcontents', 'small', 'bigskip', 'index', 'noindent', 'smallskip', 'LARGE', 'medskip', 'boldmath', 'nomenclature'];
 
 $envIgnoreList = [];
 
@@ -91,6 +91,11 @@ $cmds['textit'] = function ($args) {
 	return "<i>$str</i>";
 };
 
+$cmds['underline'] = function ($args) {
+	$str = wpContent($args[0]->content);
+	return "<u>$str</u>";
+};
+
 $cmds['textsc'] = function ($args) {
 	$str = wpContent($args[0]->content);
 	return "<span style=\"font-variant: small-caps;\">$str</span>";
@@ -112,6 +117,8 @@ $cmds['section'] = function ($args, $n) {return produceHeader($n, 1);};
 $cmds['subsection'] = function ($args, $n) {return produceHeader($n, 2);};
 $cmds['subsubsection'] = function ($args, $n) {return produceHeader($n, 3);};
 
+$cmds['paragraph'] = $cmds['textbf'];
+
 $cmds['ref'] = function ($args) {
 	$arg = trim(LatexParser::unparse($args[0]->content));
 	$id = validID($arg);
@@ -125,7 +132,7 @@ $cmds['eqref'] = function ($args) {
 
 $cmds['cite'] = function ($args) {
 	global $parser, $citetags;
-	$id = trim(LatexParser::unparse($args[0]->content));
+	$id = trim(LatexParser::unparse($args[1]->content));
 	$t = $citetags[$id];
 	if ($t === null) return "??";
 	$extra = [];
@@ -140,6 +147,11 @@ $cmds['cite'] = function ($args) {
 	return "[footnote]{$note}[/footnote]";
 };
 
+$cmds['footnote'] = function ($args) {
+	$str = wpContent($args[0]->content);
+	return "[footnote]{$str}[/footnote]";
+};
+
 $cmds['href'] = function ($args) {
 	global $parser;
 	$href = trim(LatexParser::unparse($args[0]->content));
@@ -147,14 +159,21 @@ $cmds['href'] = function ($args) {
 	return "<a href=\"$href\">$text</a>";
 };
 
+$cmds['url'] = function ($args) {
+	global $parser;
+	$href = trim(LatexParser::unparse($args[0]->content));
+	return "<a href=\"$href\">$href</a>";
+};
+
 $envs = [];
 
 $envs['align'] = function ($n) {
 	global $parser;
 	$tex = trim(LatexParser::unparse($n->content));
-	return alignBox($tex, $n);
+	return mathBox($tex, $n);
 };
 $envs['equation'] = $envs['align'];
+$envs['multline'] = $envs['align'];
 
 $envs['itemize'] = function ($n) {
 	$ltype = 'ul';
@@ -338,9 +357,11 @@ $special = [
 ];
 $controlChars = [
 	'%' => '%', // escaped
+	'&' => '&amp;', // escaped
 	'-' => '&shy;', // discretionary hyphen
 	' ' => ' ', // space after control word
 	'\\' => '<br>', // WARNING: might have different meaning depending on context
+	'ldots' => '…',
 ];
 
 $punctChars = [
@@ -364,7 +385,7 @@ function produceCmd($n) {
 		$entity = html_entity_decode($entity, 0, 'UTF-8');
 		$out = $entity . substr($v, 1);
 	} elseif (!in_array($cmd, $cmdIgnoreList)) {
-		// trigger_error("unknown control word: \\$cmd", E_USER_WARNING);
+		trigger_error("unknown control word: \\$cmd", E_USER_WARNING);
 	}
 	return $out;
 }
@@ -391,7 +412,7 @@ function wpContent($ast) {
 			if ($n->inline) {
 				$out .= "[latex]{$tex}[/latex]";
 			} else {
-				$out .= alignBox($tex, $n, false);
+				$out .= mathBox($tex, $n, false);
 			}
 			// $out .= tex2img($tex);
 		} elseif ($t == 'space') {
@@ -443,9 +464,9 @@ function imgElement($path, $id, $list) {
 	return "<img class=\"size-full{$lst}\" id=\"$id\" width=\"100%\" src=\"$src\" />";
 }
 
-function alignBox($tex, $n, $numbered = true) {
+function mathBox($tex, $n, $numbered = true, $env = 'aligned') {
 	$id = isset($n->label) ? validID($n->label) : validID();
-	$tex = "\\begin{aligned}[]$tex\\end{aligned}";
+	$tex = "\\begin{{$env}}[]$tex\\end{{$env}}";
 	// $out = "\n<div class=\"textbox tbformel\" style=\"text-align: center;\">";
 	if ($n->star || !$numbered) {
 		$out = "\n<div class=\"wp-caption aligncenter\">";
