@@ -35,13 +35,11 @@ function chapter_split($txt, $level = 0, &$preamble = false) {
 
 function wp2pb($txt) {
 	$txt = explode('<!-- appendix separator -->', $txt);
-
+	
 	$chapters = chapter_split($txt[0], 0, $front_txt);
 	$front_chapters = chapter_split($front_txt, 1);
 	$back_chapters = count($txt) > 1 ? chapter_split($txt[1]) : [];
-
-	// $chapters = [];
-
+	
 	$exp = (object)[
 		'front-matter' => $front_chapters,
 		'part' => [
@@ -51,11 +49,6 @@ function wp2pb($txt) {
 			],
 		],
 		'back-matter' => $back_chapters,
-	];
-
-	$exp->{'front-matter'} []= (object)[
-		'post_title' => 'Inhaltsverzeichnis',
-		'post_content' => '[toc levels="3" /]',
 	];
 	
 	return $exp;
