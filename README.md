@@ -25,6 +25,8 @@ The new `--mode <mode>` argument changes the output of the script:
 * `tex2wp in.tex --parts --mode pb > out.json` will convert chapters to parts and sections to chapters in pressbooks. Note that there can't be any content after a new part before the first section.
 * `tex2wp in.tex --mode quiet --figarch out.zip` will create a zip archive containing all figures (but with `.pdf` replaced with `.svg`) used in the input document. This again can be imported using **pressbooks_import**.
 
+The `pb` mode will put all sections before the first chapter into the `front-matter` and the sections inside the appendix into the `back-matter`. Chapters are converted to regular chapters. With the `--parts` option, chapters are converted to parts, and sections will be converted to chapters instead.
+
 ## High Level Architecture Overview
 
 The TeX parser produces an [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST) from `.tex` source files. 
@@ -64,12 +66,15 @@ This tree is then converted to wordpress source code in the last step. Instead o
 
 ## Capabilities
 
+A minimal input document to produce output is `\begin{document}hi\end{document}`. Sections to `<h1>`, subsections to `<h2>` and so on. Chapters are converted to `<h0>`.
+
 * Supports inline and block based LaTeX formulas as native LaTeX elements inside Wordpress. 
 * Converts to following commands and environments to their corresponding HTML or Wordpress pendant (new commands can be added easily)
     * Commands:
         * \emph
         * \href
         * \par
+        * \chapter
         * \\(sub)*section
         * \textbf
         * \textit
