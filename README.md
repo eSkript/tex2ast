@@ -25,7 +25,7 @@ The new `--mode <mode>` argument changes the output of the script:
 * `tex2wp in.tex --parts --mode pb > out.json` will convert chapters to parts and sections to chapters in pressbooks. Note that there can't be any content after a new part before the first section.
 * `tex2wp in.tex --mode quiet --figarch out.zip` will create a zip archive containing all figures (but with `.pdf` replaced with `.svg`) used in the input document. This again can be imported using **pressbooks_import**.
 
-The `pb` mode will put all sections before the first chapter into the `front-matter` and the sections inside the appendix into the `back-matter`. Chapters are converted to regular chapters. With the `--parts` option, chapters are converted to parts, and sections will be converted to chapters instead.
+The `pb` mode will convert all sections before the first chapter into the `front-matter` chapters and the chapters inside the appendix into the `back-matter` chapters. The remaining chapters are converted to regular chapters. With the `--parts` option, chapters are converted to parts, and sections will be converted to chapters instead.
 
 ## High Level Architecture Overview
 
