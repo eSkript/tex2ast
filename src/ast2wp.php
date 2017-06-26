@@ -319,13 +319,9 @@ function produceEnv($n) {
 			$dispName .= " [ref id=\"$id\" d=\"abh\"]";
 		}
 		$content = trim(wpContent($n->content));
-		$maybeOption = substr($content, 0, 7) != '[latex]'; // hack! do proper opt handling
-		if ($maybeOption && preg_match('/^\[/', $content)) {
-			// http://www.regular-expressions.info/recurse.html
-			preg_match('/\[(?>[^\[\]]|(?R))*\]/', $content, $m);
-			$dispName .= ': ';
-			$dispName .= trim(substr($m[0], 1, -1));
-			$content = substr($content, strlen($m[0]));
+		$optarg = maybeOpt($content);
+		if ($optarg !== null) {
+			$dispName .= ": $optarg";
 		}
 		if (isset($n->starid)) {
 			$dispName .= " [votingstar id=\"{$n->starid}\"]";
@@ -413,7 +409,6 @@ function wpContent($ast) {
 			} else {
 				$out .= mathBox($tex, $n, false);
 			}
-			// $out .= tex2img($tex);
 		} elseif ($t == 'space') {
 			$out .= ' ';
 		} elseif ($t == 'char') {
@@ -479,11 +474,18 @@ function mathBox($tex, $n, $numbered = true, $env = 'aligned') {
 	return $out;
 }
 
-function tex2img($tex) {
-	$tex = trim($tex);
-	$src = "https://fskript.ethz.ch/latex/?latex=" . urlencode($tex);
-	// $alt = htmlspecialchars($tex, ENT_QUOTES);
-	return "<img class=\"latex not-in-list\" src=\"$src\" />";
+/**
+ * Detects a potential optional argument from rendered content.
+ */
+function maybeOpt(&$content) {
+	$maybeOption = substr($content, 0, 7) != '[latex]';
+	if ($maybeOption && preg_match('/^\[/', $content)) {
+		// http://www.regular-expressions.info/recurse.html
+		preg_match('/\[(?>[^\[\]]|(?R))*\]/', $content, $m);
+		$content = substr($content, strlen($m[0]));
+		return trim(substr($m[0], 1, -1));
+	}
+	return null;
 }
 
 function validID($id = null) {
