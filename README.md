@@ -22,6 +22,7 @@ The new `--mode <mode>` argument changes the output of the script:
 
 * `tex2wp in.tex --mode ast > ast.json` saves the `ast` for later reuse. `tex2wp ast.json` will run faster than `tex2wp in.tex`, but provide the same output.
 * `tex2wp in.tex --mode pb > out.json` creates a JSON file which can be imported into [pressbooks](https://github.com/pressbooks/pressbooks) using the (not yet released) **pressbooks_import** plugin.
+* `tex2wp in.tex --parts --mode pb > out.json` will convert chapters to parts and sections to chapters in pressbooks. Note that there can't be any content after a new part before the first section.
 * `tex2wp in.tex --mode quiet --figarch out.zip` will create a zip archive containing all figures (but with `.pdf` replaced with `.svg`) used in the input document. This again can be imported using **pressbooks_import**.
 
 ## High Level Architecture Overview

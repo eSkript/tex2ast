@@ -29,6 +29,9 @@ $mode = $pos === false ? 'wp' : $argv[$pos + 1];
 $pos = array_search('--figarch', $argv);
 $figarch = $pos === false ? null : $argv[$pos + 1];
 
+$pos = array_search('--parts', $argv);
+$use_parts = $pos === false ? false : true;
+
 $input = $argv[1];
 $basePath = realpath(dirname($input));
 
@@ -119,7 +122,7 @@ if ($figarch !== null) {
 
 if ($mode == 'pb') {
 	require_once("$incdir/importizer.php");
-	$pb = wp2pb($wp);
+	$pb = wp2pb($wp, $use_parts);
 	fwrite($stdout, json_encode($pb));
 }
 
