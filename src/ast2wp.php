@@ -165,6 +165,13 @@ $cmds['url'] = function ($args) {
 	return "<a href=\"$href\">$href</a>";
 };
 
+$cmds['includegraphics'] = function ($args) {
+	// return "??";
+	$opt = trim(LatexParser::unparse($args[0]->content));
+	$path = trim(LatexParser::unparse($args[1]->content));
+	return imgElement($path, null, false);
+};
+
 $envs = [];
 
 $envs['align'] = function ($n) {
@@ -239,13 +246,6 @@ $envs['figure'] = function ($n) {
 	return $out;
 };
 
-$cmds['includegraphics'] = function ($args) {
-	// return "??";
-	$opt = trim(LatexParser::unparse($args[0]->content));
-	$path = trim(LatexParser::unparse($args[1]->content));
-	return imgElement($path, null, false);
-};
-
 $envs['center'] = function ($n) {
 	$out = "\n<div class=\"wp-caption aligncenter\">\n";
 	$out .= wpContent($n->content);
@@ -290,7 +290,6 @@ $envs['titlebox'] = function ($n) {
 	if (isset($n->starid)) {
 		$title .= " [votingstar id=\"{$n->starid}\"]";
 	}
-	
 	$out = "\n<div class=\"textbox $class\">\n";
 	if (!$n->star) {
 		$out .= "<a id=\"$id\"></a>";
@@ -496,4 +495,3 @@ function validID($id = null) {
 	if (!preg_match('#^[A-Za-z]#', $id)) $id = 'z'.$id;
 	return $id;
 }
-
