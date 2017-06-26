@@ -37,7 +37,7 @@ function wp2pb($txt) {
 	$txt = explode('<!-- appendix separator -->', $txt);
 
 	$chapters = chapter_split($txt[0], 0, $front_txt);
-	$front_chapters = chapter_split($front_txt, 2);
+	$front_chapters = chapter_split($front_txt, 1);
 	$back_chapters = count($txt) > 1 ? chapter_split($txt[1]) : [];
 
 	// $chapters = [];
