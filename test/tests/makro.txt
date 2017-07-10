@@ -1,1 +1,13 @@
+blah
+
+blah arg
+
+blah defaultnextword
+
+blah opt nextword
+
+blah default arg
+
+blah opt arg
+
 [latex]P \not \subseteq Q[/latex]

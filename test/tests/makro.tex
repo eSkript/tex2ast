@@ -1,6 +1,23 @@
+\newcommand{\cmdA}{blah}
+\newcommand{\cmdB}[1]{blah #1}
+\newcommand{\cmdC}[1][default]{blah #1}
+\newcommand{\cmdD}[2][default]{blah #1 #2}
+
 \renewcommand{\subset}{\subseteq}
 
 \begin{document}
+
+\cmdA
+
+\cmdB{arg}
+
+\cmdC nextword
+
+\cmdC[opt] nextword
+
+\cmdD{arg}
+
+\cmdD[opt]{arg}
 
 $P \not\subset Q$
 
