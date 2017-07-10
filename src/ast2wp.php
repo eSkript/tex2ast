@@ -300,8 +300,6 @@ $envs['titlebox'] = function ($n) {
 	return $out;
 };
 
-// echo implode(', ', array_keys($cmds)); exit;
-
 function produceEnv($n) {
 	global $envs, $envIgnoreList, $theorems;
 	$out = '';
@@ -392,7 +390,6 @@ function wpContent($ast) {
 		$t = $n->type;
 		// produce text
 		if ($t == 'raw') {
-			// echo "-{$n->str}-\n";
 			$out .= $n->str;
 		} elseif ($t == 'group') {
 			$out .= wpContent($n->content);
@@ -402,8 +399,7 @@ function wpContent($ast) {
 			$out .= produceCmd($n);
 		} elseif ($t == 'math') {
 			$tex = trim(LatexParser::unparse($n->content));
-			// Prevent WordPress from thinking things are tags and removing them.
-			$tex = str_replace(['<', '>'], ['&lt;', '&gt;'], $tex);
+			$tex = fixMath($tex);
 			if ($n->inline) {
 				$out .= "[latex]{$tex}[/latex]";
 			} else {
@@ -460,6 +456,7 @@ function imgElement($path, $id, $list) {
 
 function mathBox($tex, $n, $numbered = true, $env = 'aligned') {
 	$id = isset($n->label) ? validID($n->label) : validID();
+	$tex = fixMath($tex);
 	$tex = "\\begin{{$env}}[]$tex\\end{{$env}}";
 	// $out = "\n<div class=\"textbox tbformel\" style=\"text-align: center;\">";
 	if ($n->star || !$numbered) {
@@ -472,6 +469,15 @@ function mathBox($tex, $n, $numbered = true, $env = 'aligned') {
 	}
 	
 	return $out;
+}
+
+/**
+ * Adjust raw TeX code to avoid interfering with WordPress stuff.
+ */
+function fixMath($tex) {
+	// Prevent WordPress from thinking things are tags and removing them.
+	$tex = str_replace(['<', '>'], ['&lt;', '&gt;'], $tex);
+	return $tex;
 }
 
 /**
