@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Get a dictionary from a string of XML attributes
 function get_attributes($str) {

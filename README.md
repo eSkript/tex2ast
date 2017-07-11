@@ -16,7 +16,7 @@ The markup is written to `stdout`. To save it to a file, use `tex2wp file.tex > 
 
 ### Beta Features
 
-In addition to `.tex`, `tex2wp` now accepts an `ast` formatted in JSON as input (depending on the file extension of the input file). Since generating the `ast` might take a lot of time, this can save a lot of time during development. 
+In addition to `.tex`, `tex2wp` now accepts an `ast` formatted in JSON as input (depending on the file extension of the input file). Since generating the `ast` might take a lot of time, this can save a lot of time during development.
 
 The new `--mode <mode>` argument changes the output of the script:
 
@@ -29,7 +29,7 @@ The `pb` mode will convert all sections before the first chapter into the `front
 
 ## High Level Architecture Overview
 
-The TeX parser produces an [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST) from `.tex` source files. 
+The TeX parser produces an [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST) from `.tex` source files.
 
     \documentclass[12pt]{article}
     \begin{document}
@@ -48,7 +48,7 @@ The generating of the AST happens in several steps. The first one is done by the
       {"type": "space", "value": "\r\n"}
       ...
 
-This linear token stream is passed to a *preprocessor* which creates a different linear token stream after doing some light processing like replacing makros with their definition and including external files. The new token stream is then passed to the *parser*, which will build the final tree by interpreting the individual tokens as part of language constructs like control words and environments. 
+This linear token stream is passed to a *preprocessor* which creates a different linear token stream after doing some light processing like replacing makros with their definition and including external files. The new token stream is then passed to the *parser*, which will build the final tree by interpreting the individual tokens as part of language constructs like control words and environments.
 
     {
       "type": "env",
@@ -62,13 +62,13 @@ This linear token stream is passed to a *preprocessor* which creates a different
       ]
     }
 
-This tree is then converted to wordpress source code in the last step. Instead of knowing every detail of the TeX language, the wordpress converter script just needs to know about some high level concepts, like paragraphs and and the meaning of text formatting commands like `\textbf`. 
+This tree is then converted to wordpress source code in the last step. Instead of knowing every detail of the TeX language, the wordpress converter script just needs to know about some high level concepts, like paragraphs and and the meaning of text formatting commands like `\textbf`.
 
 ## Capabilities
 
 A minimal input document to produce output is `\begin{document}hi\end{document}`. Sections to `<h1>`, subsections to `<h2>` and so on. Chapters are converted to `<h0>`.
 
-* Supports inline and block based LaTeX formulas as native LaTeX elements inside Wordpress. 
+* Supports inline and block based LaTeX formulas as native LaTeX elements inside Wordpress.
 * Converts to following commands and environments to their corresponding HTML or Wordpress pendant (new commands can be added easily)
     * Commands:
         * \emph
@@ -102,15 +102,15 @@ A minimal input document to produce output is `\begin{document}hi\end{document}`
     \newcommand{\webonly}[1]{}
     %tex2ast \renewcommand{\webonly}[1]{#1}
 
-will define a new command which will allow to show content only on the web, but not on paper. `%tex2ast \input{tex2wp.tex}` can be placed just before `\begin{document}` to put custom web-only modification in a separate file. 
+will define a new command which will allow to show content only on the web, but not on paper. `%tex2ast \input{tex2wp.tex}` can be placed just before `\begin{document}` to put custom web-only modification in a separate file.
 
 `\UnsetCommand` and `\UnsetEnvironment` can be used to keep the preprocessor from interpreting commands or environments so they are still visible in the AST. To use the `\starid` command but ignore it on paper, use
 
     \newcommand{\starid}[1]{}
     %tex2ast \UnsetCommand{\starid}
 
-`\raw` will output the first argument as-is. `\` is considered an escape character, which can be used for newline `\n`, tab `\t`, closing brackets without closing the command `\}` or a regular backslash `\\`. Other characters will just be printed unchanged when they follow the escape character. 
+`\raw` will output the first argument as-is. `\` is considered an escape character, which can be used for newline `\n`, tab `\t`, closing brackets without closing the command `\}` or a regular backslash `\\`. Other characters will just be printed unchanged when they follow the escape character.
 
     \newcommand{\link}[1]{\raw{<a href="#1"><code>#1</code></a>}}
 
-will define a new command to create a web link. 
+will define a new command to create a web link.

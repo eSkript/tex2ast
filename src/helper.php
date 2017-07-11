@@ -80,7 +80,7 @@ trait parserHelpers {
 	public function group2string($trim = false) {
 		// returns unaltered string between two brackets
 		// recursive calls never start with space
-		$this->skipSpace(); 
+		$this->skipSpace();
 		$str = '';
 		// NOTE: TeX would allow individual characters instead of groups
 		$this->nextToken('punct', '{');

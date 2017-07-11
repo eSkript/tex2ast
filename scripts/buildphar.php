@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // php -d phar.readonly=false buildphar.php
 

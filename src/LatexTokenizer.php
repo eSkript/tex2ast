@@ -80,21 +80,16 @@ class PreProcessor extends Tokenizer {
 			return null;
 		}
 		// pass thru non-cmd tokens
-		// if ($tok->value == 'ETH') $tok->value = "FOOOOO";
 		if ($tok->type != 'cmd') return $tok;
-		// handle makros 
+		// handle makros
 		// https://en.wikibooks.org/wiki/LaTeX/Macros
 		$cmd = substr($tok->value, 1);
-		if ($cmd == 'raw') {
-			$str = $this->group2string(true);
-			return (object) ['type'=>'raw', 'str'=>$this->decodeRaw($str)];
-		}
 		if ($cmd == 'newcommand' || $cmd == 'renewcommand') {
 			// \newcommand{name}[num]{definition}
 			$name = $this->ungroupCmd();
 			$num = $this->numArgument();
 			$d = (object)['num' => $num, 'defs' => []];
-			for ($i = 0; $i < $num; $i+= 1) { 
+			for ($i = 0; $i < $num; $i+= 1) {
 				$d->defs[$i] = $this->optStringArgument();
 			}
 			$d->str = $this->group2string(true);
@@ -106,7 +101,7 @@ class PreProcessor extends Tokenizer {
 			$name = $this->group2string(true);
 			$num = $this->numArgument();
 			$d = (object)['num' => $num, 'defs' => []];
-			for ($i = 0; $i < $num; $i+= 1) { 
+			for ($i = 0; $i < $num; $i+= 1) {
 				$d->defs[$i] = $this->optStringArgument();
 			}
 			$d->before = $this->group2string(true);
@@ -169,6 +164,10 @@ class PreProcessor extends Tokenizer {
 		if ($cmd == 'UnsetEnvironment') {
 			$name = $this->group2string(true);
 			unset($this->environments[$name]);
+		}
+		if ($cmd == 'raw') {
+			$str = $this->group2string(true);
+			return (object)['type'=>'raw', 'str'=>$this->decodeRaw($str)];
 		}
 		// nothing to handle
 		return $tok;

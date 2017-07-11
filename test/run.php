@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $bin = __DIR__ . '/../src/convert.php';
 
